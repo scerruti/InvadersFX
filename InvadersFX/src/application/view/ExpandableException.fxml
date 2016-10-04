@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Label?>
+
+<GridPane fx:controller="application.controller.ExpandableException" xmlns:fx="http://javafx.com/fxml/1" maxWidth="Infinity">
+	<Label text="The exception stack trace was:"/>
+	<TextArea fx:id="stackTrace" editable="false" wrapText="true" /> 
+</GridPane>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+
+<fx:root type="javafx.scene.image.ImageView" xmlns:fx="http://javafx.com/fxml" >
+		<Image url="application/resources/rocket.png" />
+</fx:root>
