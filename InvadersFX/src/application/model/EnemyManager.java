@@ -9,6 +9,7 @@ import javafx.concurrent.Task;
 
 public class EnemyManager extends Service<Void> {
 	private HashSet<Enemy> enemies = new HashSet<>();
+	final private Timer enemySpawner  = new Timer();
 
 	@Override
 	protected Task<Void> createTask() {
@@ -16,18 +17,22 @@ public class EnemyManager extends Service<Void> {
 
 			@Override
 			protected Void call() throws Exception {
-				Timer enemySpawner = new Timer();
 				enemySpawner.schedule(new TimerTask() {
 
 					@Override
 					public void run() {
 						enemies.add(new Enemy(0, 0));
 					}
-				}, 0, 10000);
+				}, 0, 1000);
 				return null;
 			}
 
 		};
 
+	}
+
+	public void stop() {
+		enemySpawner.cancel();
+		enemies.clear();
 	}
 }

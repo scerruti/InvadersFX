@@ -88,5 +88,9 @@ public abstract class GameObject {
 
 	public abstract Node getControllerObject(Pane game);
 
+	public void impact() {
+		kill();	
+	}
+
 
 }

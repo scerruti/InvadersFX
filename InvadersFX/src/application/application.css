@@ -19,3 +19,9 @@
    -fx-font-family: "Arial Black";
    -fx-fill: #B1B1B1;
 }
+
+.score {
+   -fx-font-size: 28px;
+   -fx-font-family: "Arial Black";
+   -fx-fill: red;
+}

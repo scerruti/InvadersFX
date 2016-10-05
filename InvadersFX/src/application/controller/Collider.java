@@ -30,7 +30,7 @@ public abstract class Collider extends GameObject {
 	}
 
 	public void impact() {
-		model.kill();
+		model.impact();
 	}
 	
 	public abstract boolean canCollide(Node node);

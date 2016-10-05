@@ -50,7 +50,9 @@ public class Ship extends GameObject {
 	}
 
 	public void fire() {
-		InvadersFX.fire(this);
+		double x = getX() + getCannonX();
+		double y = getY() + getCannonY();
+		InvadersFX.addGameObject(new Bullet(x, y));
 	}
 
 	public double getCannonX() {
@@ -79,9 +81,12 @@ public class Ship extends GameObject {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public void impact() {
-		// TODO game over
-		kill();
+		super.impact();
+		InvadersFX.gameOver();
 	}
+
+	
 
 }

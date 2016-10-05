@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="application.controller.GameOver"
+	alignment="center" styleClass="root" onKeyPressed="#keyHandler">
+	<children>
+		<VBox alignment="TOP_CENTER">
+			<Text id="title-text" text="Game Over!" styleClass="title" />
+			<VBox alignment="CENTER">
+				<padding>
+					<Insets top="45" right="25" bottom="25" left="25" />
+				</padding>
+				<Text text="You dematerialized" styleClass="subtitle" />
+				<Text fx:id="score" styleClass="score" />
+				<Text text="Aliens!" styleClass="subtitle" />
+			</VBox>
+		</VBox>
+		<Button id="play-button" text="Play Again" StackPane.alignment="BOTTOM_CENTER"
+			onAction="#handlePlayButtonAction" defaultButton="true"/>
+	</children>
+	<padding>
+		<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+	</padding>
+</StackPane>

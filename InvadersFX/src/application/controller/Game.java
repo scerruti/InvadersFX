@@ -107,7 +107,8 @@ public class Game {
 	}
 
 	public void addEnemy(application.model.Enemy enemyModel) {
-		double position = rng.nextDouble() * gameArea.getWidth();
+		double position = rng.nextDouble() * gameArea.getWidth() * 0.8 + 
+				gameArea.getWidth() / 10.0;
 		enemyModel.setX(position);
 		enemyModel.setRotation(rng.nextBoolean());
 

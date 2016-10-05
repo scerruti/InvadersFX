@@ -50,8 +50,9 @@ public class Enemy extends TimeMotionObject {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public void impact() {
-		// TODO Keep score
-		kill();
+		super.impact();
+		InvadersFX.enemyKilled();
 	}
 }

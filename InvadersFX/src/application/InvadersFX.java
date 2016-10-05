@@ -1,7 +1,5 @@
 package application;
 
-import application.model.BulletManager;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -11,6 +9,8 @@ import application.model.EnemyManager;
 import application.model.GameObject;
 import application.model.Ship;
 import javafx.application.Application;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
@@ -25,8 +25,8 @@ public class InvadersFX extends Application {
 	private Stage primaryStage;
 	private static InvadersFX instance;
 	private Game gameController;
-	private BulletManager bulletManager;
 	private EnemyManager enemyManager;
+	private IntegerProperty score = new SimpleIntegerProperty(0);
 
 	public InvadersFX() {
 		super();
@@ -65,6 +65,8 @@ public class InvadersFX extends Application {
 	}
 
 	public void showGame() throws Exception {
+		score.set(0);
+		
 		FXMLLoader loader = new FXMLLoader();
 		Pane gamePane = (BorderPane) loader.load(getClass().getResource("/application/view/Game.fxml").openStream());
 		gameController = (Game) loader.getController();
@@ -74,16 +76,28 @@ public class InvadersFX extends Application {
 
 		primaryStage.setScene(gameScene);
 		primaryStage.show();
-		primaryStage.requestFocus();
 		gamePane.requestFocus();
 
 		enemyManager = new EnemyManager();
 		enemyManager.start();
 
-		bulletManager = new BulletManager();
-
 		gameController.addShip(new Ship(0, 0));
 	}
+	
+	public void endGame() throws Exception {
+		enemyManager.stop();
+		
+		FXMLLoader loader = new FXMLLoader();
+		Pane gameOverPane = (StackPane) loader.load(getClass().getResource("/application/view/GameOver.fxml").openStream());
+
+		Scene gameOverScene = new Scene(gameOverPane);
+		gameOverScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
+		primaryStage.setScene(gameOverScene);
+		primaryStage.show();
+		gameOverPane.requestFocus();
+	}
+
 
 	public static void main(String[] args) {
 		launch(args);
@@ -113,11 +127,29 @@ public class InvadersFX extends Application {
 		getInstance().gameController.remove(node);
 	}
 
-	public static void fire(Ship ship) {
-		getInstance().bulletManager.fireFrom(ship);
-	}
-
 	public static void checkForCollisions(Collider node) {
 		getInstance().gameController.collision(node);
+	}
+
+	public static void enemyKilled() {
+		getInstance().incrementScore();
+	}
+
+	private void incrementScore() {
+		score.set(score.intValue()+1);
+		System.out.println(score.intValue());
+	}
+	
+	public static IntegerProperty getScoreProperty() {
+		return getInstance().score;
+	}
+
+	public static void gameOver() {
+		try {
+			getInstance().endGame();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
