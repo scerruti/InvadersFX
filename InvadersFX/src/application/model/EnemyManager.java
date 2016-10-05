@@ -1,5 +1,6 @@
 package application.model;
 
+import java.util.HashSet;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -7,9 +8,7 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
 public class EnemyManager extends Service<Void> {
-	
-	public EnemyManager() {
-	}
+	private HashSet<Enemy> enemies = new HashSet<>();
 
 	@Override
 	protected Task<Void> createTask() {
@@ -23,7 +22,7 @@ public class EnemyManager extends Service<Void> {
 
 					        @Override
 					        public void run() {
-					        	new Enemy(0,0);
+					        	enemies.add(new Enemy(0,0));
 					        }
 					    }, 0, 1000);
 				return null;
@@ -32,5 +31,4 @@ public class EnemyManager extends Service<Void> {
 		};
 
 	}
-
 }

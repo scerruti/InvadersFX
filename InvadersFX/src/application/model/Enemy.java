@@ -47,4 +47,9 @@ public class Enemy extends TimeMotionObject {
 	public Node getControllerObject() {
 		throw new UnsupportedOperationException();
 	}
+
+	public void impact() {
+		// TODO Keep score
+		kill();
+	}
 }

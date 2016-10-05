@@ -2,13 +2,16 @@ package application.controller;
 
 import java.io.IOException;
 
+import application.InvadersFX;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-public class Enemy extends ImageView {
+public class Enemy extends ImageView implements Collider {
 	final application.model.Enemy enemyModel;
 	final Pane game;
 
@@ -46,13 +49,37 @@ public class Enemy extends ImageView {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!newValue.booleanValue()) {
-					game.getChildren().remove(Enemy.this);
+					InvadersFX.removeGameNode(Enemy.this);
+					enemyModel.getAlive().removeListener(this);
 				}
 
 			}
 			
 		});
+		
+		this.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
+				InvadersFX.checkForCollisions(Enemy.this);
+			}
+		});
 				
+	}
+
+	@Override
+	public boolean collidesWith(Node otherNode) {
+		if (otherNode instanceof Bullet &&
+				otherNode.getBoundsInParent().intersects(getBoundsInParent())) {
+				return true;
+			} else {
+				return false;
+			}
+	}
+
+	@Override
+	public void impact() {
+		enemyModel.impact();
 	}
 
 }

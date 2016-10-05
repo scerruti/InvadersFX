@@ -1,5 +1,8 @@
 package application.controller;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import application.model.GameObject;
@@ -87,11 +90,7 @@ public class Game {
         }
     }
     
-    private void exit() {
-		Platform.exit();
-	}
-
-	@FXML
+    @FXML
     public void mouseHandler(MouseEvent event) {
     }
 
@@ -118,5 +117,27 @@ public class Game {
 	public void addShip(application.model.Ship shipModel) {
 		this.ship = new Ship(gameArea, shipModel);
 		gameArea.getChildren().add(this.ship);
+	}
+
+	public void collision(Collider node) {
+		boolean impact = false;
+		List<Node> hitNodes = new ArrayList<Node>();
+		List<Node> nodes = gameArea.getChildren();
+		for (Node otherNode : nodes) {
+			if ((otherNode instanceof Collider) &&
+					node.collidesWith(otherNode)) {
+				hitNodes.add(otherNode);
+				impact = true;
+			}
+		}
+		
+		if (impact) {
+			Iterator<Node> i = hitNodes.iterator();
+			while (i.hasNext()) {
+				((Collider) i.next()).impact();
+			}
+			node.impact();
+		}
+		
 	}
 }

@@ -1,9 +1,9 @@
 package application;
 	
-import application.model.Bullet;
 import application.model.BulletManager;
+
+import application.controller.Collider;
 import application.controller.Game;
-import application.model.Enemy;
 import application.model.EnemyManager;
 import application.model.GameObject;
 import application.model.Ship;
@@ -24,6 +24,7 @@ public class InvadersFX extends Application {
 	private static InvadersFX instance;
 	private Game gameController;
 	private BulletManager bulletManager;
+	private EnemyManager enemyManager;
 
 	public InvadersFX() {
 		super();
@@ -71,7 +72,7 @@ public class InvadersFX extends Application {
 		primaryStage.requestFocus();
 		gamePane.requestFocus();
 		
-		EnemyManager enemyManager = new EnemyManager();
+		enemyManager = new EnemyManager();
 		enemyManager.start();
 		
 		bulletManager = new BulletManager();
@@ -109,5 +110,9 @@ public class InvadersFX extends Application {
 	
 	public static void fire(Ship ship) {
 		getInstance().bulletManager.fireFrom(ship);
+	}
+
+	public static void checkForCollisions(Collider node) {
+		getInstance().gameController.collision(node);
 	}
 }
