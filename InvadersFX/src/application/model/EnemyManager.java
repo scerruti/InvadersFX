@@ -33,6 +33,9 @@ public class EnemyManager extends Service<Void> {
 
 	public void stop() {
 		enemySpawner.cancel();
-		enemies.clear();
+		for (Enemy e : enemies) {
+			e.kill();
+		}
+ 		enemies.clear();
 	}
 }

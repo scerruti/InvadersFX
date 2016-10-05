@@ -10,17 +10,17 @@
 	alignment="center" styleClass="root" onKeyPressed="#keyHandler">
 	<children>
 		<VBox alignment="TOP_CENTER">
-			<Text id="title-text" text="Game Over!" styleClass="title" />
+			<Text id="title-text" text="%game.over" styleClass="title" />
 			<VBox alignment="CENTER">
 				<padding>
 					<Insets top="45" right="25" bottom="25" left="25" />
 				</padding>
-				<Text text="You dematerialized" styleClass="subtitle" />
+				<Text text="%what.you.did" styleClass="subtitle" />
 				<Text fx:id="score" styleClass="score" />
-				<Text text="Aliens!" styleClass="subtitle" />
+				<Text text="%who.you.did.it.to" styleClass="subtitle" />
 			</VBox>
 		</VBox>
-		<Button id="play-button" text="Play Again" StackPane.alignment="BOTTOM_CENTER"
+		<Button id="play-button" text="%replay" StackPane.alignment="BOTTOM_CENTER"
 			onAction="#handlePlayButtonAction" defaultButton="true"/>
 	</children>
 	<padding>

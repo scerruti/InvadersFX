@@ -9,14 +9,16 @@ import application.model.EnemyManager;
 import application.model.GameObject;
 import application.model.Ship;
 import javafx.application.Application;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -27,6 +29,12 @@ public class InvadersFX extends Application {
 	private Game gameController;
 	private EnemyManager enemyManager;
 	private IntegerProperty score = new SimpleIntegerProperty(0);
+	private DoubleProperty currentWidth = new SimpleDoubleProperty();
+	private DoubleProperty currentHeight = new SimpleDoubleProperty();
+	private Pane gamePane;
+	private Scene gameScene;
+	private Pane gameOverPane;
+	private Scene gameOverScene;
 
 	public InvadersFX() {
 		super();
@@ -56,8 +64,12 @@ public class InvadersFX extends Application {
 
 			titleScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
+			currentWidth.bind(primaryStage.widthProperty());
+			currentHeight.bind(primaryStage.heightProperty());
+
 			primaryStage.setScene(titleScene);
 			primaryStage.show();
+
 			titlePane.requestFocus();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,16 +78,23 @@ public class InvadersFX extends Application {
 
 	public void showGame() throws Exception {
 		score.set(0);
-		
-		FXMLLoader loader = new FXMLLoader();
-		Pane gamePane = (BorderPane) loader.load(getClass().getResource("/application/view/Game.fxml").openStream());
-		gameController = (Game) loader.getController();
+		if (gamePane == null) {
+			FXMLLoader loader = new FXMLLoader();
+			gamePane = (AnchorPane) loader.load(getClass().getResource("/application/view/Game.fxml").openStream());
+			gameController = (Game) loader.getController();
 
-		Scene gameScene = new Scene(gamePane);
-		gameScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			gameScene = new Scene(gamePane);
+			gameScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		}
+
+		double width = currentWidth.doubleValue();
+		double height = currentHeight.doubleValue();
 
 		primaryStage.setScene(gameScene);
+		primaryStage.setWidth(width);
+		primaryStage.setHeight(height);
 		primaryStage.show();
+
 		gamePane.requestFocus();
 
 		enemyManager = new EnemyManager();
@@ -83,21 +102,31 @@ public class InvadersFX extends Application {
 
 		gameController.addShip(new Ship(0, 0));
 	}
-	
+
 	public void endGame() throws Exception {
 		enemyManager.stop();
+
+		if (gameOverPane == null) {
+			URL location = getClass().getResource("/application/view/GameOver.fxml");
+			ResourceBundle resources = ResourceBundle.getBundle("application/resources/Invaders");
+			FXMLLoader loader = new FXMLLoader(location, resources);
+
+			gameOverPane = (StackPane) loader.load();
+
+			gameOverScene = new Scene(gameOverPane);
+			gameOverScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		}
+
+		double width = currentWidth.doubleValue();
+		double height = currentHeight.doubleValue();
 		
-		FXMLLoader loader = new FXMLLoader();
-		Pane gameOverPane = (StackPane) loader.load(getClass().getResource("/application/view/GameOver.fxml").openStream());
-
-		Scene gameOverScene = new Scene(gameOverPane);
-		gameOverScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-
 		primaryStage.setScene(gameOverScene);
+		primaryStage.setWidth(width);
+		primaryStage.setHeight(height);
 		primaryStage.show();
+
 		gameOverPane.requestFocus();
 	}
-
 
 	public static void main(String[] args) {
 		launch(args);
@@ -136,10 +165,9 @@ public class InvadersFX extends Application {
 	}
 
 	private void incrementScore() {
-		score.set(score.intValue()+1);
-		System.out.println(score.intValue());
+		score.set(score.intValue() + 1);
 	}
-	
+
 	public static IntegerProperty getScoreProperty() {
 		return getInstance().score;
 	}
