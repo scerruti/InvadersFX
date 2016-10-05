@@ -1,0 +1,15 @@
+InvadersFX is a JavaFX port of the Swing game designed by Dave for a level 2 instructional project. I attempted to keep the project simple while still showcasing good development practice and use of both JavaFX and MVC design.
+
+Collision detection is being done in the controller. Games are often not suited to strict MVC because the game logic from the model can be closely tied to the view. However, excluding collisions, the logic is isolated to the model.
+
+Steps to getting JavaFX working with Eclipse.
+
+Adding Java FX to Eclipse using e(fx)clipse plugin.
+Help → Install new software
+Add site: http://download.eclipse.org/efxclipse/updates-released/2.4.0/site
+Install the e(fx)clipse installer
+See: https://www.eclipse.org/efxclipse/install.html
+
+You may also want to download Scene Builder, pre-built binaries for Scene Builder are available from http://gluonhq.com/labs/scene-builder/ and the source is available directly from Oracle. Scene Builder is a visual layout editor for FXML.
+
+The next step in this project will be to determine if there is a compelling reason to generate recipes for use in a class or workshop.
