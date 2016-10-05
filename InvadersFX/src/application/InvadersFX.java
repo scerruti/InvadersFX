@@ -1,6 +1,9 @@
 package application;
-	
+
 import application.model.BulletManager;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import application.controller.Collider;
 import application.controller.Game;
@@ -18,7 +21,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-
 public class InvadersFX extends Application {
 	private Stage primaryStage;
 	private static InvadersFX instance;
@@ -30,7 +32,7 @@ public class InvadersFX extends Application {
 		super();
 		instance = this;
 	}
-	
+
 	public static InvadersFX getInstance() {
 		return instance;
 	}
@@ -38,30 +40,33 @@ public class InvadersFX extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
-		
-		try {			
-			Pane titlePane = (StackPane)FXMLLoader.load(getClass().getResource
-				    ("/application/view/Title.fxml"));
-//			Pane instructionPane = (Pane)FXMLLoader.load(getClass().getResource
-//				    ("instruction.fxml"));
-//			Pane endPane = (Pane)FXMLLoader.load(getClass().getResource
-//				    ("end.fxml"));
-			
+
+		try {
+			URL location = getClass().getResource("/application/view/Title.fxml");
+			ResourceBundle resources = ResourceBundle.getBundle("application/resources/Invaders");
+			FXMLLoader loader = new FXMLLoader(location, resources);
+			Pane titlePane = (StackPane) loader.load();
+			// Pane instructionPane =
+			// (Pane)FXMLLoader.load(getClass().getResource
+			// ("instruction.fxml"));
+			// Pane endPane = (Pane)FXMLLoader.load(getClass().getResource
+			// ("end.fxml"));
+
 			Scene titleScene = new Scene(titlePane);
-			
+
 			titleScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 			primaryStage.setScene(titleScene);
 			primaryStage.show();
-		} catch(Exception e) {
+			titlePane.requestFocus();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void showGame() throws Exception {
 		FXMLLoader loader = new FXMLLoader();
-		Pane gamePane = (BorderPane)loader.load(getClass().getResource
-			    ("/application/view/Game.fxml").openStream());
+		Pane gamePane = (BorderPane) loader.load(getClass().getResource("/application/view/Game.fxml").openStream());
 		gameController = (Game) loader.getController();
 
 		Scene gameScene = new Scene(gamePane);
@@ -71,15 +76,15 @@ public class InvadersFX extends Application {
 		primaryStage.show();
 		primaryStage.requestFocus();
 		gamePane.requestFocus();
-		
+
 		enemyManager = new EnemyManager();
 		enemyManager.start();
-		
+
 		bulletManager = new BulletManager();
-		
-		gameController.addShip(new Ship(0,0));
+
+		gameController.addShip(new Ship(0, 0));
 	}
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -89,25 +94,25 @@ public class InvadersFX extends Application {
 	}
 
 	public static void unregisterForTimeUpdates(ChangeListener<Number> listener) {
-		getInstance().gameController.unregisterForTimeUpdates(listener);		
+		getInstance().gameController.unregisterForTimeUpdates(listener);
 	}
-	
+
 	public static void registerBoundsChanged(ChangeListener<Bounds> changeListener) {
 		getInstance().gameController.registerBoundsChanged(changeListener);
 	}
 
 	public static void unregisterBoundsChanged(ChangeListener<Bounds> changeListener) {
-		getInstance().gameController.unregisterBoundsChanged(changeListener);		
+		getInstance().gameController.unregisterBoundsChanged(changeListener);
 	}
 
 	public static void addGameObject(GameObject object) {
 		getInstance().gameController.add(object);
 	}
-	
+
 	public static void removeGameNode(Node node) {
 		getInstance().gameController.remove(node);
 	}
-	
+
 	public static void fire(Ship ship) {
 		getInstance().bulletManager.fireFrom(ship);
 	}

@@ -39,13 +39,12 @@ public class Ship extends ImageView implements Collider {
 
 			@Override
 			public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
-				// TODO Auto-generated method stub
 				shipModel.setCannonX(newValue.getWidth() / 2.0);
 			}
 		});
 		this.shipModel.setCannonX(this.getBoundsInLocal().getWidth() / 2.0);
 		this.shipModel.setCannonY(0.0);
-		
+
 		shipModel.getAlive().addListener(new ChangeListener<Boolean>() {
 
 			@Override
@@ -56,7 +55,7 @@ public class Ship extends ImageView implements Collider {
 				}
 
 			}
-			
+
 		});
 
 	}

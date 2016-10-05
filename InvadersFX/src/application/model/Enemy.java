@@ -24,12 +24,12 @@ public class Enemy extends TimeMotionObject {
 	public void move(long duration) {
 		cumulativeDuration += duration;
 		long frames = 10 * cumulativeDuration / 1000000000;
-				
+
 		double distance = (duration / 10000000);
 		double secondaryYMotion = 5 * Math.cos(frames);
 		double secondaryXMotion = 5 * Math.sin(frames);
 		double newY = y.getValue() + distance + secondaryYMotion;
-		double newX = x.getValue() + (rotation?secondaryXMotion:-secondaryXMotion);
+		double newX = x.getValue() + (rotation ? secondaryXMotion : -secondaryXMotion);
 		x.setValue(newX);
 		y.setValue(newY);
 	}

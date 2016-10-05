@@ -8,7 +8,7 @@ public class ObjectManager {
 
 	long enemyTimer = 0;
 	int enemySpawnTime = 1000;
-	
+
 	public ObjectManager() {
 		objects = new ArrayList<GameObject>();
 	}
@@ -20,7 +20,7 @@ public class ObjectManager {
 	public void update() {
 		manageEnemies();
 		checkCollision();
-		purgeObjects();	
+		purgeObjects();
 	}
 
 	private void purgeObjects() {
@@ -31,18 +31,18 @@ public class ObjectManager {
 		}
 	}
 
-	private void manageEnemies(){
-		if(System.currentTimeMillis() - enemyTimer >= enemySpawnTime){
+	private void manageEnemies() {
+		if (System.currentTimeMillis() - enemyTimer >= enemySpawnTime) {
 			addObject(new Enemy(new Random().nextInt(100), 0));
 			enemyTimer = System.currentTimeMillis();
 		}
 	}
-	
+
 	private void checkCollision() {
 		// Collision detection needs to happen in the controller
 	}
-	
-	public void reset(){
+
+	public void reset() {
 		objects.clear();
 	}
 }

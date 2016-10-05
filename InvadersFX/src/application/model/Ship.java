@@ -5,50 +5,50 @@ import application.controller.Game;
 import javafx.scene.Node;
 
 public class Ship extends GameObject {
-	
+
 	private boolean armed;
 	private double speed;
-	
+
 	private double cannonX;
 	private double cannonY;
-		
-	public Ship(double x, double y){
+
+	public Ship(double x, double y) {
 		super(x, y);
-		
+
 		speed = 5.0;
 		armed = true;
 	}
-	
+
 	public void moveUp() {
-		y.setValue(y.getValue()-speed);
+		y.setValue(y.getValue() - speed);
 	}
-	
+
 	public void moveDown() {
-		y.setValue(y.getValue()+speed);
+		y.setValue(y.getValue() + speed);
 	}
 
 	public void moveLeft() {
-		x.setValue(x.getValue()-speed);
+		x.setValue(x.getValue() - speed);
 	}
-	
+
 	public void moveRight() {
-		x.setValue(x.getValue()+speed);
+		x.setValue(x.getValue() + speed);
 	}
-	
+
 	public boolean isArmed() {
 		return armed;
 	}
-	
+
 	public void rearm() {
 		armed = true;
 	}
 
 	public void disarm() {
-		armed = false;		
+		armed = false;
 	}
 
 	public void fire() {
-		InvadersFX.fire(this);	
+		InvadersFX.fire(this);
 	}
 
 	public double getCannonX() {

@@ -8,6 +8,7 @@ public class ExpandableException {
 	private TextArea stackTrace;
 
 	public void setStackTrace(String stackTrace) {
-		this.stackTrace.setText(stackTrace);;
+		this.stackTrace.setText(stackTrace);
+		;
 	}
 }

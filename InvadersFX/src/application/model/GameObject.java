@@ -13,32 +13,31 @@ import javafx.scene.Node;
 
 public abstract class GameObject {
 	protected BooleanProperty alive = new SimpleBooleanProperty();
-	
+
 	protected DoubleProperty x;
 	protected DoubleProperty y;
-	
+
 	private ChangeListener<Bounds> boundsChangeListener = new ChangeListener<Bounds>() {
 		@Override
 		public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
 			reposition(oldValue, newValue);
 		}
 	};
-	
-	public GameObject(double x, double y){
+
+	public GameObject(double x, double y) {
 		alive.set(true);
-		
+
 		this.x = new SimpleDoubleProperty(x);
 		this.y = new SimpleDoubleProperty(y);
-		
+
 		InvadersFX.registerBoundsChanged(boundsChangeListener);
 	}
-	
+
 	protected void reposition(Bounds oldValue, Bounds newValue) {
-		x.set(x.get()/oldValue.getWidth()*newValue.getWidth());
-		y.set(y.get()/oldValue.getHeight()*newValue.getHeight());
+		x.set(x.get() / oldValue.getWidth() * newValue.getWidth());
+		y.set(y.get() / oldValue.getHeight() * newValue.getHeight());
 	}
 
-	
 	public BooleanProperty getAlive() {
 		return alive;
 	}
@@ -63,7 +62,7 @@ public abstract class GameObject {
 	public void setX(double x) {
 		this.x.set(x);
 	}
-	
+
 	public void setY(double y) {
 		this.y.set(y);
 	}

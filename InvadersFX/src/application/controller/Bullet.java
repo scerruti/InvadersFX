@@ -11,7 +11,7 @@ import javafx.scene.image.ImageView;
 
 public class Bullet extends ImageView implements Collider {
 	application.model.Bullet bulletModel;
-	
+
 	public Bullet(application.model.Bullet bullet) {
 		this.bulletModel = bullet;
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/view/Bullet.fxml"));
@@ -28,9 +28,9 @@ public class Bullet extends ImageView implements Collider {
 		this.yProperty().bindBidirectional(bulletModel.yProperty());
 
 		// Center and advance bullet based on size
-		this.xProperty().set(this.xProperty().doubleValue() - this.getBoundsInLocal().getWidth()/2.0);
-		this.yProperty().set(this.yProperty().doubleValue() - this.getBoundsInLocal().getHeight()/2.0);
-		
+		this.xProperty().set(this.xProperty().doubleValue() - this.getBoundsInLocal().getWidth() / 2.0);
+		this.yProperty().set(this.yProperty().doubleValue() - this.getBoundsInLocal().getHeight() / 2.0);
+
 		this.yProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -41,7 +41,7 @@ public class Bullet extends ImageView implements Collider {
 				}
 			}
 		});
-		
+
 		this.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
 
 			@Override
@@ -49,7 +49,7 @@ public class Bullet extends ImageView implements Collider {
 				InvadersFX.checkForCollisions(Bullet.this);
 			}
 		});
-		
+
 		bulletModel.getAlive().addListener(new ChangeListener<Boolean>() {
 
 			@Override
@@ -60,14 +60,13 @@ public class Bullet extends ImageView implements Collider {
 				}
 
 			}
-			
+
 		});
 	}
 
 	@Override
 	public boolean collidesWith(Node otherNode) {
-		if (otherNode instanceof Enemy &&
-			otherNode.getBoundsInParent().intersects(getBoundsInParent())) {
+		if (otherNode instanceof Enemy && otherNode.getBoundsInParent().intersects(getBoundsInParent())) {
 			return true;
 		} else {
 			return false;

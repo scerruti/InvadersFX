@@ -18,7 +18,7 @@ public class Enemy extends ImageView implements Collider {
 	public Enemy(Pane gameArea, application.model.Enemy enemyModel) {
 		this.game = gameArea;
 		this.enemyModel = enemyModel;
-		
+
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/view/Enemy.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
@@ -28,10 +28,10 @@ public class Enemy extends ImageView implements Collider {
 		} catch (IOException exception) {
 			throw new RuntimeException(exception);
 		}
-		
+
 		this.xProperty().bindBidirectional(enemyModel.xProperty());
 		this.yProperty().bindBidirectional(enemyModel.yProperty());
-		
+
 		yProperty().addListener(new ChangeListener<Number>() {
 
 			@Override
@@ -40,10 +40,10 @@ public class Enemy extends ImageView implements Collider {
 					enemyModel.kill();
 					// GAME OVER
 				}
-				
+
 			}
 		});
-		
+
 		enemyModel.getAlive().addListener(new ChangeListener<Boolean>() {
 
 			@Override
@@ -54,9 +54,9 @@ public class Enemy extends ImageView implements Collider {
 				}
 
 			}
-			
+
 		});
-		
+
 		this.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
 
 			@Override
@@ -64,17 +64,17 @@ public class Enemy extends ImageView implements Collider {
 				InvadersFX.checkForCollisions(Enemy.this);
 			}
 		});
-				
+
 	}
 
 	@Override
 	public boolean collidesWith(Node otherNode) {
-		if ((otherNode instanceof Bullet || otherNode instanceof Ship) &&
-				otherNode.getBoundsInParent().intersects(getBoundsInParent())) {
-				return true;
-			} else {
-				return false;
-			}
+		if ((otherNode instanceof Bullet || otherNode instanceof Ship)
+				&& otherNode.getBoundsInParent().intersects(getBoundsInParent())) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override

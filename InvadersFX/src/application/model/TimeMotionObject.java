@@ -12,19 +12,18 @@ public abstract class TimeMotionObject extends GameObject {
 			move(newValue.longValue() - oldValue.longValue());
 		}
 	};
-	
+
 	public TimeMotionObject(double x, double y) {
 		super(x, y);
-		
+
 		InvadersFX.registerForTimeUpdates(timeChangeListener);
-	}	
-	
-	
+	}
+
 	@Override
 	public void kill() {
 		super.kill();
 		InvadersFX.unregisterForTimeUpdates(timeChangeListener);
 	}
 
-	public abstract void move(long duration); 
+	public abstract void move(long duration);
 }
