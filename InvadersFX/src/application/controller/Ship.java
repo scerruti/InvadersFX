@@ -33,8 +33,6 @@ public class Ship extends ImageView {
 		
 		this.xProperty().setValue(game.getWidth()/2.0 - this.getLayoutBounds().getWidth()/2.0);
 		this.yProperty().setValue(game.getHeight() - this.getLayoutBounds().getHeight());
-
-		System.out.println(game.getLayoutBounds().getWidth());
 	}
 
 	public void setBulletManager(BulletManager bulletManager) {
