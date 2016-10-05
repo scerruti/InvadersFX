@@ -1,7 +1,8 @@
-package application.controller;
+package application.model;
 
 import java.util.HashSet;
 
+import application.InvadersFX;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.Pane;
@@ -11,12 +12,11 @@ public class BulletManager {
 	HashSet<Bullet> bullets = new HashSet<>();
 
 	public void fireFrom(Ship ship) {
-		// Fire from center top of ship
-		double x = ship.xProperty().doubleValue() + ship.getLayoutBounds().getWidth()/2.0;
-		double y = ship.yProperty().doubleValue();
 
+		double x = ship.xProperty().doubleValue() + ship.getCannonX();
+		double y = ship.yProperty().doubleValue() + ship.getCannonY();
 		final Bullet bullet = new Bullet(x, y);
-		game.getChildren().add(bullet);
+		InvadersFX.addBullet(bullet);
 		bullets.add(bullet);
 
 		bullet.yProperty().addListener(new ChangeListener<Number>() {

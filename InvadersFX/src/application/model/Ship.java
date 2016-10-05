@@ -1,11 +1,16 @@
 package application.model;
 
+import application.InvadersFX;
+
 public class Ship extends GameObject {
 	
 	private boolean armed;
 	private double speed;
+	
+	private double cannonX;
+	private double cannonY;
 		
-	public Ship(int x, int y){
+	public Ship(double x, double y){
 		super(x, y);
 		
 		speed = 5.0;
@@ -38,6 +43,26 @@ public class Ship extends GameObject {
 
 	public void disarm() {
 		armed = false;		
+	}
+
+	public void fire() {
+		InvadersFX.fire(this);	
+	}
+
+	public double getCannonX() {
+		return cannonX;
+	}
+
+	public void setCannonX(double cannonX) {
+		this.cannonX = cannonX;
+	}
+
+	public double getCannonY() {
+		return cannonY;
+	}
+
+	public void setCannonY(double cannonY) {
+		this.cannonY = cannonY;
 	}
 
 }

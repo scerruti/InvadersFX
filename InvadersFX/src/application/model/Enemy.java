@@ -5,7 +5,7 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
-public class Enemy extends GameObject {
+public class Enemy extends TimeMotionObject {
 	private long cumulativeDuration = 0;
 	private boolean rotation;
 
@@ -18,17 +18,9 @@ public class Enemy extends GameObject {
 				InvadersFX.addEnemy(Enemy.this);
 			}
 		});
-		
-		InvadersFX.registerForTimeUpdates(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				if (oldValue.longValue() != 0) 
-					move(newValue.longValue() - oldValue.longValue());
-			}
-		});
 	}
 
+	@Override
 	public void move(long duration) {
 		cumulativeDuration += duration;
 		long frames = 10 * cumulativeDuration / 1000000000;

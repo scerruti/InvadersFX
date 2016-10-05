@@ -2,17 +2,20 @@ package application.controller;
 
 import java.io.IOException;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 public class Ship extends ImageView {
-	application.model.Ship shipModel;
-	BulletManager bulletManager;
+	final application.model.Ship shipModel;
 	private Pane game;
 
-	public Ship() {
-		this.shipModel = new application.model.Ship(-50, -50);
+	public Ship(Pane gameArea, application.model.Ship shipModel) {
+		this.game = gameArea;
+		this.shipModel = shipModel;
 		
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/view/Ship.fxml"));
 		fxmlLoader.setRoot(this);
@@ -24,21 +27,24 @@ public class Ship extends ImageView {
 			throw new RuntimeException(exception);
 		}
 		
-		this.xProperty().bindBidirectional(shipModel.xProperty());
-		this.yProperty().bindBidirectional(shipModel.yProperty());
-	}
-	
-	public void setGame(Pane gameArea) {
-		this.game = gameArea;
+		this.xProperty().bindBidirectional(this.shipModel.xProperty());
+		this.yProperty().bindBidirectional(this.shipModel.yProperty());
 		
 		this.xProperty().setValue(game.getWidth()/2.0 - this.getLayoutBounds().getWidth()/2.0);
 		this.yProperty().setValue(game.getHeight() - this.getLayoutBounds().getHeight());
-	}
+		
+		this.boundsInLocalProperty().addListener(new ChangeListener<Bounds>() {
 
-	public void setBulletManager(BulletManager bulletManager) {
-		this.bulletManager = bulletManager;
+			@Override
+			public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
+				// TODO Auto-generated method stub
+				shipModel.setCannonX(newValue.getWidth()/2.0);
+			}
+		});
+		this.shipModel.setCannonX(this.getBoundsInLocal().getWidth()/2.0);
+		this.shipModel.setCannonY(0.0);
 	}
-	
+		
 	public void moveUp() {
 		shipModel.moveUp();
 		if (this.yProperty().getValue() < 0) {
@@ -71,8 +77,7 @@ public class Ship extends ImageView {
 
 	public void fire() {
 		if (shipModel.isArmed()) {
-			shipModel.disarm();
-			bulletManager.fireFrom(this);
+			shipModel.fire();
 		} else {
 			shipModel.rearm();
 		}

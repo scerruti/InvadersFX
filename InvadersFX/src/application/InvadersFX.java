@@ -1,8 +1,11 @@
 package application;
 	
+import application.model.Bullet;
+import application.model.BulletManager;
 import application.controller.Game;
 import application.model.Enemy;
 import application.model.EnemyManager;
+import application.model.Ship;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +21,7 @@ public class InvadersFX extends Application {
 	private Stage primaryStage;
 	private static InvadersFX instance;
 	private Game gameController;
+	private BulletManager bulletManager;
 
 	public InvadersFX() {
 		super();
@@ -67,21 +71,41 @@ public class InvadersFX extends Application {
 		
 		EnemyManager enemyManager = new EnemyManager();
 		enemyManager.start();
+		
+		bulletManager = new BulletManager();
+		
+		gameController.addShip(new Ship(0,0));
 	}
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
 
-	public static void registerForTimeUpdates(ChangeListener<? super Number> listener) {
+	public static void registerForTimeUpdates(ChangeListener<Number> listener) {
 		getInstance().gameController.registerForTimeUpdates(listener);
+	}
+
+	public static void unregisterForTimeUpdates(ChangeListener<Number> listener) {
+		getInstance().gameController.unregisterForTimeUpdates(listener);		
 	}
 	
 	public static void registerBoundsChanged(ChangeListener<Bounds> changeListener) {
 		getInstance().gameController.registerBoundsChanged(changeListener);
 	}
 
+	public static void unregisterBoundsChanged(ChangeListener<Bounds> changeListener) {
+		getInstance().gameController.unregisterBoundsChanged(changeListener);		
+	}
+
 	public static void addEnemy(Enemy enemy) {
 		getInstance().gameController.addEnemy(enemy);
+	}
+
+	public static void addBullet(Bullet bullet) {
+		getInstance().gameController.addBullet(bullet);		
+	}
+
+	public static void fire(Ship ship) {
+		getInstance().bulletManager.fireFrom(ship);
 	}
 }

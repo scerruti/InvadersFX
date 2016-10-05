@@ -21,7 +21,6 @@ public class Game {
 	
 	private final LongProperty timeProperty = new SimpleLongProperty();
 	private Ship ship;
-	private BulletManager bulletManager;
 	private Random rng = new Random();
 	
     @FXML
@@ -42,32 +41,24 @@ public class Game {
             }
         }.start();
         
-        Platform.runLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				// Add the bullet manager
-				bulletManager = new BulletManager();
-				bulletManager.setGame(gameArea);
-				
-			    // Add the ship
-				ship = new Ship();
-				ship.setBulletManager(bulletManager);
-				ship.setGame(gameArea);
-				gameArea.getChildren().add(ship);
-			}
-		});
     }
-
 
     public void registerForTimeUpdates(ChangeListener<? super Number> listener) {
     	timeProperty.addListener(listener);
     }
     
+	public void unregisterForTimeUpdates(ChangeListener<Number> listener) {
+		timeProperty.removeListener(listener);
+	}
+	
 	public void registerBoundsChanged(ChangeListener<Bounds> changeListener) {
 		gameArea.boundsInLocalProperty().addListener(changeListener);
 	}
-    
+ 
+	public void unregisterBoundsChanged(ChangeListener<Bounds> changeListener) {
+		gameArea.boundsInLocalProperty().removeListener(changeListener);		
+	}
+
     @FXML
     public void keyHandler(KeyEvent event) {
         switch (event.getCode()) {
@@ -546,5 +537,15 @@ public class Game {
 		enemyModel.setRotation(rng.nextBoolean());
 		
 		gameArea.getChildren().add(new Enemy(gameArea, enemyModel));
+	}
+	
+	public void addShip(application.model.Ship shipModel) {
+		this.ship = new Ship(gameArea, shipModel);
+		gameArea.getChildren().add(this.ship);
+	}
+
+
+	public void addBullet(application.model.Bullet bullet) {
+		gameArea.getChildren().add(new Bullet(bullet));
 	}
 }

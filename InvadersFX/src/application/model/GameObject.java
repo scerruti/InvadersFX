@@ -15,20 +15,20 @@ public class GameObject {
 	protected DoubleProperty x;
 	protected DoubleProperty y;
 	
+	private ChangeListener<Bounds> boundsChangeListener = new ChangeListener<Bounds>() {
+		@Override
+		public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
+			reposition(oldValue, newValue);
+		}
+	};
+	
 	public GameObject(double x, double y){
 		alive.set(true);
 		
 		this.x = new SimpleDoubleProperty(x);
 		this.y = new SimpleDoubleProperty(y);
 		
-		InvadersFX.registerBoundsChanged(new ChangeListener<Bounds>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
-				reposition(oldValue, newValue);
-			}
-
-		});
+		InvadersFX.registerBoundsChanged(boundsChangeListener);
 	}
 	
 	protected void reposition(Bounds oldValue, Bounds newValue) {
@@ -47,6 +47,7 @@ public class GameObject {
 
 	public void kill() {
 		this.alive.set(false);
+		InvadersFX.unregisterBoundsChanged(boundsChangeListener);
 	}
 
 	public DoubleProperty xProperty() {
