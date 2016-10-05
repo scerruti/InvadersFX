@@ -1,6 +1,8 @@
 package application.model;
 
 import application.InvadersFX;
+import application.controller.Game;
+import javafx.scene.Node;
 
 public class Ship extends GameObject {
 	
@@ -63,6 +65,16 @@ public class Ship extends GameObject {
 
 	public void setCannonY(double cannonY) {
 		this.cannonY = cannonY;
+	}
+
+	@Override
+	public void addToGameController(Game game) {
+		game.addShip(this);
+	}
+
+	@Override
+	public Node getControllerObject() {
+		throw new UnsupportedOperationException();
 	}
 
 }

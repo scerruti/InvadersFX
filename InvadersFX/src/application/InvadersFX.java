@@ -5,11 +5,13 @@ import application.model.BulletManager;
 import application.controller.Game;
 import application.model.Enemy;
 import application.model.EnemyManager;
+import application.model.GameObject;
 import application.model.Ship;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -97,14 +99,14 @@ public class InvadersFX extends Application {
 		getInstance().gameController.unregisterBoundsChanged(changeListener);		
 	}
 
-	public static void addEnemy(Enemy enemy) {
-		getInstance().gameController.addEnemy(enemy);
+	public static void addGameObject(GameObject object) {
+		getInstance().gameController.add(object);
 	}
-
-	public static void addBullet(Bullet bullet) {
-		getInstance().gameController.addBullet(bullet);		
+	
+	public static void removeGameNode(Node node) {
+		getInstance().gameController.remove(node);
 	}
-
+	
 	public static void fire(Ship ship) {
 		getInstance().bulletManager.fireFrom(ship);
 	}

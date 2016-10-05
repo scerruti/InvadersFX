@@ -16,7 +16,7 @@ public class BulletManager {
 		double x = ship.xProperty().doubleValue() + ship.getCannonX();
 		double y = ship.yProperty().doubleValue() + ship.getCannonY();
 		final Bullet bullet = new Bullet(x, y);
-		InvadersFX.addBullet(bullet);
+		InvadersFX.addGameObject(bullet);
 		bullets.add(bullet);
 
 		bullet.yProperty().addListener(new ChangeListener<Number>() {

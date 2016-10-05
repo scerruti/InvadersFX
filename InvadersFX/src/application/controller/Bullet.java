@@ -2,6 +2,7 @@ package application.controller;
 
 import java.io.IOException;
 
+import application.InvadersFX;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
@@ -35,6 +36,7 @@ public class Bullet extends ImageView {
 				if (newValue.doubleValue() <= 0) {
 					bulletModel.kill();
 					observable.removeListener(this);
+					InvadersFX.removeGameNode(Bullet.this);
 				}
 			}
 		});

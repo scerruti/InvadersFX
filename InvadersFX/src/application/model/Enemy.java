@@ -1,9 +1,9 @@
 package application.model;
 
 import application.InvadersFX;
+import application.controller.Game;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
 
 public class Enemy extends TimeMotionObject {
 	private long cumulativeDuration = 0;
@@ -15,7 +15,7 @@ public class Enemy extends TimeMotionObject {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				InvadersFX.addEnemy(Enemy.this);
+				InvadersFX.addGameObject(Enemy.this);
 			}
 		});
 	}
@@ -38,5 +38,13 @@ public class Enemy extends TimeMotionObject {
 		this.rotation = rotation;
 	}
 
-	
+	@Override
+	public void addToGameController(Game game) {
+		game.addEnemy(this);
+	}
+
+	@Override
+	public Node getControllerObject() {
+		throw new UnsupportedOperationException();
+	}
 }
