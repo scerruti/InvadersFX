@@ -10,12 +10,15 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 
 public abstract class GameObject {
 	protected BooleanProperty alive = new SimpleBooleanProperty();
 
 	protected DoubleProperty x;
 	protected DoubleProperty y;
+	
+	protected String view;
 
 	private ChangeListener<Bounds> boundsChangeListener = new ChangeListener<Bounds>() {
 		@Override
@@ -31,6 +34,10 @@ public abstract class GameObject {
 		this.y = new SimpleDoubleProperty(y);
 
 		InvadersFX.registerBoundsChanged(boundsChangeListener);
+	}
+
+	public String getView() {
+		return view;
 	}
 
 	protected void reposition(Bounds oldValue, Bounds newValue) {
@@ -59,8 +66,16 @@ public abstract class GameObject {
 		return y;
 	}
 
+	public double getX() {
+		return this.x.doubleValue();
+	}
+
 	public void setX(double x) {
 		this.x.set(x);
+	}
+
+	public double getY() {
+		return this.y.doubleValue();
 	}
 
 	public void setY(double y) {
@@ -71,5 +86,7 @@ public abstract class GameObject {
 		game.addGenericObject(this);
 	}
 
-	public abstract Node getControllerObject();
+	public abstract Node getControllerObject(Pane game);
+
+
 }

@@ -1,80 +1,35 @@
 package application.controller;
 
-import java.io.IOException;
 import application.InvadersFX;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Bounds;
 import javafx.scene.Node;
-import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 
-public class Bullet extends ImageView implements Collider {
-	application.model.Bullet bulletModel;
+public class Bullet extends Collider {
 
-	public Bullet(application.model.Bullet bullet) {
-		this.bulletModel = bullet;
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/view/Bullet.fxml"));
-		fxmlLoader.setRoot(this);
-		fxmlLoader.setController(this);
-
-		try {
-			fxmlLoader.load();
-		} catch (IOException exception) {
-			throw new RuntimeException(exception);
-		}
-
-		this.xProperty().bindBidirectional(bulletModel.xProperty());
-		this.yProperty().bindBidirectional(bulletModel.yProperty());
+	public Bullet(Pane game, application.model.Bullet bullet) {
+		super(game, bullet);
 
 		// Center and advance bullet based on size
 		this.xProperty().set(this.xProperty().doubleValue() - this.getBoundsInLocal().getWidth() / 2.0);
 		this.yProperty().set(this.yProperty().doubleValue() - this.getBoundsInLocal().getHeight() / 2.0);
 
+		// Remove bullets that exit the screen
 		this.yProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				if (newValue.doubleValue() <= 0) {
-					bulletModel.kill();
+				if (newValue.doubleValue() <= game.getBoundsInLocal().getMinY()) {
+					model.kill();
 					observable.removeListener(this);
 					InvadersFX.removeGameNode(Bullet.this);
 				}
 			}
 		});
-
-		this.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
-				InvadersFX.checkForCollisions(Bullet.this);
-			}
-		});
-
-		bulletModel.getAlive().addListener(new ChangeListener<Boolean>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				if (!newValue.booleanValue()) {
-					InvadersFX.removeGameNode(Bullet.this);
-					bulletModel.getAlive().removeListener(this);
-				}
-
-			}
-
-		});
 	}
 
 	@Override
-	public boolean collidesWith(Node otherNode) {
-		if (otherNode instanceof Enemy && otherNode.getBoundsInParent().intersects(getBoundsInParent())) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public void impact() {
-		bulletModel.kill();
+	public boolean canCollide(Node node) {
+		return node instanceof Enemy;
 	}
 }

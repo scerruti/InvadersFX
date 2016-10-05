@@ -23,7 +23,7 @@ public class EnemyManager extends Service<Void> {
 					public void run() {
 						enemies.add(new Enemy(0, 0));
 					}
-				}, 0, 1000);
+				}, 0, 10000);
 				return null;
 			}
 

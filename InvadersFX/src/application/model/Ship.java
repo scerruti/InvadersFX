@@ -3,6 +3,7 @@ package application.model;
 import application.InvadersFX;
 import application.controller.Game;
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 
 public class Ship extends GameObject {
 
@@ -14,6 +15,7 @@ public class Ship extends GameObject {
 
 	public Ship(double x, double y) {
 		super(x, y);
+		view = "/application/view/Ship.fxml";
 
 		speed = 5.0;
 		armed = true;
@@ -73,7 +75,7 @@ public class Ship extends GameObject {
 	}
 
 	@Override
-	public Node getControllerObject() {
+	public Node getControllerObject(Pane game) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -99,7 +99,7 @@ public class Game {
 	}
 
 	public void addGenericObject(GameObject gameObject) {
-		gameArea.getChildren().add(gameObject.getControllerObject());
+		gameArea.getChildren().add(gameObject.getControllerObject(gameArea));
 	}
 
 	public void remove(Node node) {

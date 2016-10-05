@@ -4,6 +4,7 @@ import application.InvadersFX;
 import application.controller.Game;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 
 public class Enemy extends TimeMotionObject {
 	private long cumulativeDuration = 0;
@@ -11,6 +12,7 @@ public class Enemy extends TimeMotionObject {
 
 	public Enemy(int x, int y) {
 		super(x, y);
+		view = "/application/view/Enemy.fxml";
 
 		Platform.runLater(new Runnable() {
 			@Override
@@ -44,7 +46,7 @@ public class Enemy extends TimeMotionObject {
 	}
 
 	@Override
-	public Node getControllerObject() {
+	public Node getControllerObject(Pane game) {
 		throw new UnsupportedOperationException();
 	}
 

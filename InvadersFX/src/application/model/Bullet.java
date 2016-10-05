@@ -1,10 +1,13 @@
 package application.model;
 
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 
 public class Bullet extends TimeMotionObject {
+	
 	public Bullet(double x, double y) {
 		super(x, y);
+		view = "/application/view/Bullet.fxml";
 	}
 
 	@Override
@@ -14,7 +17,8 @@ public class Bullet extends TimeMotionObject {
 	}
 
 	@Override
-	public Node getControllerObject() {
-		return new application.controller.Bullet(this);
+	public Node getControllerObject(Pane game) {
+		return new application.controller.Bullet(game, this);
 	}
+
 }

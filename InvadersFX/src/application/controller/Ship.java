@@ -1,114 +1,73 @@
 package application.controller;
 
-import java.io.IOException;
-
-import application.InvadersFX;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-public class Ship extends ImageView implements Collider {
-	final application.model.Ship shipModel;
-	private Pane game;
+public class Ship extends Collider {
 
-	public Ship(Pane gameArea, application.model.Ship shipModel) {
-		this.game = gameArea;
-		this.shipModel = shipModel;
+	public Ship(Pane game, application.model.Ship modelShip) {
+		super(game, modelShip);
 
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/view/Ship.fxml"));
-		fxmlLoader.setRoot(this);
-		fxmlLoader.setController(this);
-
-		try {
-			fxmlLoader.load();
-		} catch (IOException exception) {
-			throw new RuntimeException(exception);
-		}
-
-		this.xProperty().bindBidirectional(this.shipModel.xProperty());
-		this.yProperty().bindBidirectional(this.shipModel.yProperty());
-
+		// Initial position
 		this.xProperty().setValue(game.getWidth() / 2.0 - this.getLayoutBounds().getWidth() / 2.0);
 		this.yProperty().setValue(game.getHeight() - this.getLayoutBounds().getHeight());
 
+		// Compute canon location
 		this.boundsInLocalProperty().addListener(new ChangeListener<Bounds>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
-				shipModel.setCannonX(newValue.getWidth() / 2.0);
+				((application.model.Ship) Ship.this.model).setCannonX(newValue.getWidth() / 2.0);
 			}
 		});
-		this.shipModel.setCannonX(this.getBoundsInLocal().getWidth() / 2.0);
-		this.shipModel.setCannonY(0.0);
-
-		shipModel.getAlive().addListener(new ChangeListener<Boolean>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				if (!newValue.booleanValue()) {
-					InvadersFX.removeGameNode(Ship.this);
-					shipModel.getAlive().removeListener(this);
-				}
-
-			}
-
-		});
+		((application.model.Ship) this.model).setCannonX(this.getBoundsInLocal().getWidth() / 2.0);
+		((application.model.Ship) this.model).setCannonY(0.0);
 
 	}
 
 	public void moveUp() {
-		shipModel.moveUp();
-		if (this.yProperty().getValue() < 0) {
-			this.yProperty().setValue(0);
+		((application.model.Ship) this.model).moveUp();
+		if (model.getY() < game.getBoundsInLocal().getMinY()) {
+			model.setY(game.getBoundsInParent().getMinY());
 		}
 	}
 
 	public void moveDown() {
-		shipModel.moveDown();
-		double height = this.getBoundsInLocal().getHeight();
-		if (this.yProperty().getValue() > (game.getHeight() - height)) {
-			this.yProperty().setValue(game.getHeight() - height);
+		((application.model.Ship) this.model).moveDown();
+		if ((model.getY() + this.getBoundsInParent().getHeight()) > game.getBoundsInLocal().getMaxY()) {
+			model.setY(game.getBoundsInLocal().getMaxY() - Ship.this.getBoundsInParent().getHeight());
+
 		}
 	}
 
 	public void moveLeft() {
-		shipModel.moveLeft();
-		if (this.xProperty().getValue() < 0) {
-			this.xProperty().setValue(0);
+		((application.model.Ship) this.model).moveLeft();
+		if (model.getX() < game.getBoundsInLocal().getMinX()) {
+			model.setX(game.getBoundsInParent().getMinX());
 		}
 	}
 
 	public void moveRight() {
-		shipModel.moveRight();
-		double width = this.getBoundsInLocal().getWidth();
-		if (this.xProperty().getValue() > (game.getWidth() - width)) {
-			this.xProperty().setValue(game.getWidth() - width);
+		((application.model.Ship) this.model).moveRight();
+		if ((model.getX() + this.getBoundsInParent().getWidth()) > game.getBoundsInLocal().getMaxX()) {
+			model.setX(game.getBoundsInLocal().getMaxX() - Ship.this.getBoundsInParent().getWidth());
+
 		}
 	}
 
 	public void fire() {
-		if (shipModel.isArmed()) {
-			shipModel.fire();
+		if (((application.model.Ship) this.model).isArmed()) {
+			((application.model.Ship) this.model).fire();
 		} else {
-			shipModel.rearm();
+			((application.model.Ship) this.model).rearm();
 		}
 	}
 
 	@Override
-	public boolean collidesWith(Node otherNode) {
-		if (otherNode instanceof Enemy && otherNode.getBoundsInParent().intersects(getBoundsInParent())) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public void impact() {
-		shipModel.impact();
+	public boolean canCollide(Node node) {
+		return node instanceof Enemy;
 	}
 }
