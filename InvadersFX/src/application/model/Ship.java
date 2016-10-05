@@ -77,4 +77,9 @@ public class Ship extends GameObject {
 		throw new UnsupportedOperationException();
 	}
 
+	public void impact() {
+		// TODO game over
+		kill();
+	}
+
 }

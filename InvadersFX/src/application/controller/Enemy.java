@@ -69,7 +69,7 @@ public class Enemy extends ImageView implements Collider {
 
 	@Override
 	public boolean collidesWith(Node otherNode) {
-		if (otherNode instanceof Bullet &&
+		if ((otherNode instanceof Bullet || otherNode instanceof Ship) &&
 				otherNode.getBoundsInParent().intersects(getBoundsInParent())) {
 				return true;
 			} else {
